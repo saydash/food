@@ -46,14 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     modalTrigger.forEach(item => {
-        item.addEventListener('click', () => {
-            modal.classList.add('show');
-            modal.classList.remove('hide');
-            document.body.style.overflow = 'hidden';
-        });
+        item.addEventListener('click', openModal);
 
     });
 
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+    }
     function closeModal() {
         modal.classList.add('hide');
         modal.classList.remove('show');
@@ -74,6 +75,17 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     });
+    
+    const modalTimerId = setTimeout(openModal, 4000);
+
+    function openModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+            openModal();
+            window.removeEventListener('scroll', openModalByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', openModalByScroll);
 
     // Class 
 
@@ -123,4 +135,5 @@ document.addEventListener('DOMContentLoaded', () => {
         '.menu .container'
 
     ).render();
+    
 }); 

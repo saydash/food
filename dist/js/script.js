@@ -133,12 +133,14 @@ document.addEventListener('DOMContentLoaded', () => {
         modal = document.querySelector('.modal'),
         modalCLoseBtn = document.querySelector('[data-close]');
   modalTrigger.forEach(item => {
-    item.addEventListener('click', () => {
-      modal.classList.add('show');
-      modal.classList.remove('hide');
-      document.body.style.overflow = 'hidden';
-    });
+    item.addEventListener('click', openModal);
   });
+
+  function openModal() {
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+  }
 
   function closeModal() {
     modal.classList.add('hide');
@@ -158,7 +160,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.code === "KeyA" && modal.classList.contains('show')) {
       closeModal();
     }
-  }); // Class 
+  });
+  const modalTimerId = setTimeout(openModal, 4000);
+
+  function openModalByScroll() {
+    if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+      openModal();
+      window.removeEventListener('scroll', openModalByScroll);
+    }
+  }
+
+  window.addEventListener('scroll', openModalByScroll); // Class 
 
   class MenuCard {
     constructor(src, alt, title, descr, price, parentSelector) {
